@@ -24,4 +24,19 @@ test.describe('Home Page', () => {
     // Check that the welcome message is present using more specific locator
     await expect(page.getByText('Find your next game! And maybe even back one! Explore our collection!')).toBeVisible();
   });
+
+  test('should filter games by category and publisher combination', async ({ page }) => {
+    await test.step('Select the filters', async () => {
+      await page.getByRole('checkbox', { name: 'Strategy' }).check();
+      await page.getByRole('checkbox', { name: 'GitHub Games' }).check();
+      await page.getByTestId('apply-filters-button').click();
+    });
+
+    await test.step('Verify the filtered catalog', async () => {
+      await expect(page).toHaveURL(/category=Strategy/);
+      await expect(page).toHaveURL(/publisher=GitHub(?:%20|\+)Games/);
+      await expect(page.locator('[data-testid="game-card"]:visible')).toHaveCount(1);
+      await expect(page.getByRole('heading', { name: 'Server Siege', exact: true })).toBeVisible();
+    });
+  });
 });
