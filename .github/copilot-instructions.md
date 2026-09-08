@@ -14,6 +14,14 @@ This is a crowdfunding platform for games with a developer theme. The applicatio
 
 ## Code standards
 
+### Comments and Documentation
+
+- Comment intent, not mechanics: explain why a decision was made, an invariant must be preserved, or a non-obvious constraint exists.
+- Do not add comments that merely restate the code below them. Prefer clear names and types for self-explanatory behavior.
+- Keep comments close to the code they explain, and update or remove them whenever the related behavior changes. An outdated comment is a bug.
+- Use TSDoc/JSDoc for exported data-layer functions and document their purpose, parameters, and return value. See [`drizzle.instructions.md`](instructions/drizzle.instructions.md) for the required format.
+- Document every reusable Astro component's `Props` interface so its public contract is clear. See [`astro.instructions.md`](instructions/astro.instructions.md).
+
 ### Required Before Each Commit
 
 #### Testing guidelines
@@ -34,8 +42,10 @@ This is a crowdfunding platform for games with a developer theme. The applicatio
 
 ### Code formatting requirements
 
-- Use TypeScript with explicit types for function parameters and return values, especially in the data layer (`db/`, `src/lib/`)
-- Frontend code (TypeScript, Astro) must pass ESLint checks (`npm run lint`)
+- Use TypeScript with explicit types for function parameters and return values, especially in the data layer (`db/`, `src/lib/`).
+- Use four spaces for indentation, single quotes for strings, semicolons, trailing commas in multiline constructs, and one logical statement per line.
+- Prefer `interface` for object contracts and `type` for unions, intersections, and aliases that do not need declaration merging.
+- Frontend code (TypeScript, Astro) must pass ESLint checks (`npm run lint`). ESLint enforces the data-layer module-boundary type requirement.
 
 ### Data Layer Patterns (Drizzle + Node SQLite)
 

@@ -35,9 +35,13 @@ export default [
 
   // TypeScript-specific overrides
   {
-    files: ["**/*.ts"],
+    files: ["db/**/*.ts", "src/lib/*.ts"],
     languageOptions: {
       parser: tseslint.parser,
+    },
+    rules: {
+      // Exported data-layer APIs must declare their parameter and return types.
+      "@typescript-eslint/explicit-module-boundary-types": "error",
     },
   },
 ];

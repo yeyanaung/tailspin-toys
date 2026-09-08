@@ -51,6 +51,22 @@ export async function getAllGameIds(db: Database): Promise<number[]> {
 }
 ```
 
+- Every exported function in `db/**/*.ts` and `src/lib/*.ts` must have a TSDoc/JSDoc block immediately above its declaration.
+- The block must describe the function's purpose, every parameter (including the injectable `db` argument), and the return value. Use `@param` and `@returns` when the signature is not self-evident:
+
+```ts
+/**
+ * Return all games in stable title order.
+ *
+ * @param db Injectable Drizzle database used for the query.
+ * @returns Games mapped to the application-facing type.
+ */
+export async function getAllGames(db: Database): Promise<Game[]> {
+  // ...
+}
+```
+
+- Document exported interfaces and types when their meaning is not obvious from their names. Do not use documentation blocks to repeat field names or implementation details.
 - Always `order by` a stable column (title) so static builds are deterministic.
 - Map raw rows to the app-facing `Game`/`Publisher`/`Category` types in one place; don't leak Drizzle row shapes into components.
 - Keep ordering/lookup logic in `games.ts`, not in pages.
@@ -70,3 +86,9 @@ Node.js 22.13 or later is required because the data layer uses the built-in `nod
 ## Type checking
 
 The data layer (`db/**/*.ts`, `src/lib/*.ts`) is type-checked by `npm run typecheck`, which runs the native **TypeScript 7** compiler (`tsgo`, from `@typescript/native-preview`) against `tsconfig.tsgo.json`. Keep helpers exported with explicit parameter and return types so `tsgo` can verify them. Linting is unaffected — ESLint + `typescript-eslint` still run on the classic `typescript` package.
+
+## Comments and formatting
+
+- Comments explain intent, invariants, or non-obvious trade-offs; they must not paraphrase the next line of code.
+- Use four-space indentation, single-quoted strings, semicolons, and trailing commas in multiline constructs. Follow the surrounding file when an existing generated or third-party format is unavoidable.
+- Keep TSDoc current with the implementation. Update or delete it in the same change as the code it describes.
